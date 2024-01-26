@@ -1,0 +1,56 @@
+{
+  "namespace": "genai-enriched",
+  "name": "demo",
+  "type": "record",
+  "fields":
+    [
+        {
+            "name": "user_id",
+            "type": {
+                "type": "long"
+            }
+        },
+        {
+            "name": "first_name",
+            "type": {
+                "type": "string"
+            }
+        },
+        {
+            "name": "last_name",
+            "type": {
+                "type": "string"
+            }
+        },
+        {
+            "name": "company",
+            "type": {
+                "type": "string"
+            }
+        },
+        {
+            "name": "email_address",
+            "type": {
+                "type": "string"
+            }
+        },
+        {
+            "name": "phone_number",
+            "type": {
+                "type": "string"
+            }
+        },
+        {
+            "name": "linkedin_profile_url",
+            "type": {
+                "type": "string"
+            }
+        },
+        {
+            "name": "context",
+            "type": {
+                "type": "string"
+            }
+        }
+    ]
+}

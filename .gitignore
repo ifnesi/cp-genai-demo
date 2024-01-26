@@ -1,0 +1,8 @@
+.venv
+.vscode/
+.DS_Store
+*.pyc
+__pycache__/
+config/*
+!config/localhost.ini
+.env_api_keys
