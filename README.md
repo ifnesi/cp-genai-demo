@@ -151,8 +151,8 @@ CREATE STREAM CLEAN_LEADS WITH (kafka_topic='clean_leads', value_format='AVRO') 
 ```
 Given the name '<FIRST_NAME LAST_NAME COMPANY>' get the link to their Linkedin profile. Your answer should only contain the URL
 ```
-8. OpenAI's LLM and ProxyCurl will do their magic and, for that case, return `https://www.linkedin.com/in/williamhgates`
-9. Having the profile URL we can then get the **public** profile data from LinkedIn using ProxyCurl
+8. OpenAI's LLM and ProxyCurl will do their magic and, for that case, return `https://www.linkedin.com/in/williamhgates`.
+9. Having the profile URL we can then get the **public** profile data from LinkedIn using ProxyCurl.
 10. The data we get from LinkedIn is what we need to enrich the prompt when submitting the second request to OpenAI. The prompt is the following:
 ```
 Given the Linkedin information '<linkedin_public_profile_data>' about a person from I want you to create a JSON response with the following structure:,
@@ -195,7 +195,7 @@ Given the Linkedin information '<linkedin_public_profile_data>' about a person f
   "context": "{\"summary\": \"Co-chair of the Bill & Melinda Gates Foundation. Founder of Breakthrough Energy. Co-founder of Microsoft. Voracious reader. Avid traveler. Active blogger.\", \"latest_position\": {\"job_title\": \"Co-chair\", \"company\": \"Bill & Melinda Gates Foundation\", \"summary\": \"Co-chair of the Bill & Melinda Gates Foundation. Leading philanthropic efforts to improve global healthcare, education, and access to technology.\"}, \"interesting_facts\": [\"Bill Gates is the co-founder of Microsoft, one of the world\'s largest technology companies.\", \"He is known for his voracious reading habits and is an avid traveler.\"], \"topic_of_interest\": \"Global healthcare and education\", \"ice_breakers\": [\"What book have you read recently that has left a lasting impact on you?\", \"Have you visited any interesting places during your travels?\"]}"'
 }
 ```
-13. If you want to generate a new lead (which will trigger the how data streaming flow), access pgAdmin and add a new row to the table `pre_leads`. Please notice although the CDC connector will publish to the Kafka topic `postgres.public.pre_leads` upon create, update and delete, the ksqlDB stream `CLEAN_LEADS` was designed to on;y consider inserts (notice the filter `WHERE OP='c'`). For details about the event value fields for that connector please refer to their [documentation](https://debezium.io/documentation/reference/stable/connectors/postgresql.html)
+13. If you want to generate a new lead (which will trigger the how data streaming flow), access pgAdmin and add a new row to the table `pre_leads`. Please notice although the CDC connector will publish to the Kafka topic `postgres.public.pre_leads` upon create, update and delete, the ksqlDB stream `CLEAN_LEADS` was designed to on;y consider inserts (notice the filter `WHERE OP='c'`). For details about the event value fields for that connector please refer to their [documentation](https://debezium.io/documentation/reference/stable/connectors/postgresql.html).
 
 ## Running the demo
 To run the demo, start docker desktop then run `./demo.sh --start`, it should take less than 2 minutes to have everything up and running, by default it will look Bill Gate up and get his summary from LinkedIn, but before you try to cold call him both email and phone number are no the real ones, so please don't try!
@@ -262,8 +262,6 @@ Output example:
 2024-01-26 10:00:48.000 [INFO]: Creating ksqlDB STREAMS
 
 CREATE STREAM PRE_LEADS WITH (kafka_topic='postgres.public.pre_leads', value_format='AVRO');
-
-
 [
   {
     "@type": "currentStatus",
@@ -279,10 +277,7 @@ CREATE STREAM PRE_LEADS WITH (kafka_topic='postgres.public.pre_leads', value_for
   }
 ]
 
-
 CREATE STREAM CLEAN_LEADS WITH (kafka_topic='clean_leads', value_format='AVRO') AS SELECT AFTER->USER_ID, AFTER->FIRST_NAME, AFTER->LAST_NAME, AFTER->COMPANY, AFTER->EMAIL_ADDRESS, AFTER->PHONE_NUMBER FROM PRE_LEADS WHERE OP='c';
-
-
 [
   {
     "@type": "currentStatus",
@@ -297,7 +292,6 @@ CREATE STREAM CLEAN_LEADS WITH (kafka_topic='clean_leads', value_format='AVRO') 
     "warnings": []
   }
 ]
-
 
 2024-01-26 10:00:50.000 [INFO]: Starting GenAI streaming application
 2024-01-26 10:00:52.240 [INFO]: Started consumer demo-genai-01 (demo-genai) on topic 'clean_leads'
