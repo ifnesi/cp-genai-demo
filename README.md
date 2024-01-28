@@ -3,8 +3,12 @@
 # Confluent and GenAI
 This demo is based on https://github.com/ora0600/genai-with-confluent.
 
-Use Case:
-<table><tr><td>Leads are populated to a Database or CRM system, but they need to be enriched with additional content so it can be picked up by the business development team before calling the leads. Content such as a short professional summary, some interesting personal/professional facts and a couple of ice-breakers. This saves money, and adds value for the prospect and also increases the chances of success to connect with the lead and open up doors to do business with them.</td></tr></table>
+<table width="100%">
+  <tr><th colspan="2" style="color:black;background-color:#666600;border: 1px solid #666600;">USE CASE</tr>
+  <tr>
+    <td style="border: 1px solid #666600;">Leads are populated to a Database or CRM system manually or ideally through an automated process (like for example, visitors on your website), but most of the time they need to be enriched with additional content so it can be picked up by the business development team before touching base with them. Content such as a short professional summary, some interesting personal/professional facts and a couple of ice-breakers. This saves money, and adds value for the prospect and also increases the chances of success to connect with the lead and open up doors to do business with them.</td>
+  </tr>
+</table>
 
 Demo is composed of:
 * [PostgreSQL](https://www.postgresql.org/) database (to emulate our CRM system)
@@ -15,7 +19,7 @@ Demo is composed of:
 * [ksqlDB](https://docs.confluent.io/platform/current/ksqldb/index.html) cluster to process the data received by the source connector
 * [Connect cluster](https://docs.confluent.io/platform/current/connect/userguide.html)
 * [Debezium PostgreSQL CDC Source Connector for Confluent Platform](https://docs.confluent.io/kafka-connectors/debezium-postgres-source/current/overview.html) to auto ingest the CRM table from the PostgreSQL database
-* Streaming application (in [Python](https://docs.confluent.io/platform/current/clients/confluent-kafka-python/html/index.html)) to have the leads enriched with AI generated data
+* Streaming application in [Python](https://docs.confluent.io/platform/current/clients/confluent-kafka-python/html/index.html) to have the leads enriched with AI generated data
 
 ## Software Requirements
 * [jq](https://jqlang.github.io/jq/)
@@ -42,8 +46,12 @@ To be able to interact with the APIs, you will need the following API keys:
 * [ProxyCurl](https://nubela.co/proxycurl/) to query the leads professional profile on LinkedIn
   - Follow [these steps](https://nubela.co/proxycurl). You get 10 free credit, it is more than enough for a simple demo
 
-Important:
-<table><tr><td>Unfortunately the APIs are not for free, but with less than USD$ 10 ou can run this demo.</td></tr></table>
+<table width="100%">
+  <tr><th colspan="2" style="color:black;background-color:#990000;border: 1px solid #990000;">IMPORTANT</th></tr>
+  <tr>
+    <td style="border: 1px solid #990000;">Unfortunately the APIs are not for free, but with less than USD$ 10 ou can run this demo.</td>
+  </tr>
+</table>
 
 Having the API keys at hand, create a file named `.env_api_keys` file by executing the command:
 ```bash
@@ -195,7 +203,7 @@ Given the Linkedin information '<linkedin_public_profile_data>' about a person f
   "context": "{\"summary\": \"Co-chair of the Bill & Melinda Gates Foundation. Founder of Breakthrough Energy. Co-founder of Microsoft. Voracious reader. Avid traveler. Active blogger.\", \"latest_position\": {\"job_title\": \"Co-chair\", \"company\": \"Bill & Melinda Gates Foundation\", \"summary\": \"Co-chair of the Bill & Melinda Gates Foundation. Leading philanthropic efforts to improve global healthcare, education, and access to technology.\"}, \"interesting_facts\": [\"Bill Gates is the co-founder of Microsoft, one of the world\'s largest technology companies.\", \"He is known for his voracious reading habits and is an avid traveler.\"], \"topic_of_interest\": \"Global healthcare and education\", \"ice_breakers\": [\"What book have you read recently that has left a lasting impact on you?\", \"Have you visited any interesting places during your travels?\"]}"'
 }
 ```
-13. If you want to generate a new lead (which will trigger the how data streaming flow), access pgAdmin and add a new row to the table `pre_leads`. Please notice although the CDC connector will publish to the Kafka topic `postgres.public.pre_leads` upon create, update and delete, the ksqlDB stream `CLEAN_LEADS` was designed to on;y consider inserts (notice the filter `WHERE OP='c'`). For details about the event value fields for that connector please refer to their [documentation](https://debezium.io/documentation/reference/stable/connectors/postgresql.html).
+13. If you want to generate a new lead (which will trigger the how data streaming flow), access pgAdmin and add a new row to the table `pre_leads`. Please notice although the CDC connector will publish to the Kafka topic `postgres.public.pre_leads` upon create, update and delete, the ksqlDB stream `CLEAN_LEADS` was designed to only consider inserts (notice the filter `WHERE OP='c'`). For details about the event value fields for that connector please refer to their [documentation](https://debezium.io/documentation/reference/stable/connectors/postgresql.html).
 
 ## Running the demo
 To run the demo, start docker desktop then run `./demo.sh --start`, it should take less than 2 minutes to have everything up and running, by default it will look Bill Gate up and get his summary from LinkedIn, but before you try to cold call him both email and phone number are no the real ones, so please don't try!
