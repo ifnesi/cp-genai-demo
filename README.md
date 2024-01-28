@@ -3,10 +3,10 @@
 # Confluent and GenAI
 This demo is based on https://github.com/ora0600/genai-with-confluent.
 
-<table width="100%">
-  <tr><th colspan="2" style="color:black;background-color:#666600;border: 1px solid #666600;">USE CASE</tr>
+<table>
+  <tr><th colspan="2">USE CASE</tr>
   <tr>
-    <td style="border: 1px solid #666600;">Leads are populated to a Database or CRM system manually or ideally through an automated process (like for example, visitors on your website), but most of the time they need to be enriched with additional content so it can be picked up by the business development team before touching base with them. Content such as a short professional summary, some interesting personal/professional facts and a couple of ice-breakers. This saves money, and adds value for the prospect and also increases the chances of success to connect with the lead and open up doors to do business with them.</td>
+    <td>Leads are populated to a Database or CRM system manually or ideally through an automated process (like for example, visitors on your website), but most of the time they need to be enriched with additional content so it can be picked up by the business development team before touching base with them. Content such as a short professional summary, some interesting personal/professional facts and a couple of ice-breakers. This saves money, and adds value for the prospect and also increases the chances of success to connect with the lead and open up doors to do business with them.</td>
   </tr>
 </table>
 
@@ -46,10 +46,10 @@ To be able to interact with the APIs, you will need the following API keys:
 * [ProxyCurl](https://nubela.co/proxycurl/) to query the leads professional profile on LinkedIn
   - Follow [these steps](https://nubela.co/proxycurl). You get 10 free credit, it is more than enough for a simple demo
 
-<table width="100%">
-  <tr><th colspan="2" style="color:black;background-color:#990000;border: 1px solid #990000;">IMPORTANT</th></tr>
+<table>
+  <tr><th colspan="2">IMPORTANT</th></tr>
   <tr>
-    <td style="border: 1px solid #990000;">Unfortunately the APIs are not for free, but with less than USD$ 10 ou can run this demo.</td>
+    <td>Unfortunately the APIs are not for free, but with less than USD$ 10 ou can run this demo.</td>
   </tr>
 </table>
 
