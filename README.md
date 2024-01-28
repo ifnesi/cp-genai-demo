@@ -83,7 +83,7 @@ INSERT INTO public.pre_leads (first_name, last_name, company, email_address, pho
 3. You can access pgAdmin and inspect the data:
 ![image](docs/pgadmin-table-pre_leads.png)
 4. The PostgreSQL Source Connector will be configured to CDC to Confluent Platform the table `public.pre_leads`. In that moment the following message will be published through the connector to the Kafka topic `postgres.public.pre_leads` Avro serialised. See example below (remember, this is in the PostgreSQL Debezium format)
-```
+```bash
 {
   "before": null,
   "after": {
@@ -137,15 +137,15 @@ INSERT INTO public.pre_leads (first_name, last_name, company, email_address, pho
 ```
 5. We could use that topic as is, however if, for example, in the future we change our CRM system we would need to adjust all downstream applications for a possible new data structure. For that reason, we need to create a **Data Product** to be able to decouple the CRM to the downstream applications. In case of any change in the CRM we only need to adjust that layer. To do so we will use ksqlDB.
 - First we need to ingest the topic `postgres.public.pre_leads`. The following is the ksqlDB Stream created:
-```
+```bash
 CREATE STREAM PRE_LEADS WITH (kafka_topic='postgres.public.pre_leads', value_format='AVRO');
 ```
 - Then, we need to clean it up and output the result to the topic `clean_leads` also Avro serialised:
-```
+```bash
 CREATE STREAM CLEAN_LEADS WITH (kafka_topic='clean_leads', value_format='AVRO') AS SELECT AFTER->USER_ID, AFTER->FIRST_NAME, AFTER->LAST_NAME, AFTER->COMPANY, AFTER->EMAIL_ADDRESS, AFTER->PHONE_NUMBER FROM PRE_LEADS WHERE OP='c';
 ```
 6. Now that we have the data we need in a format we can assure the downstream applications it will not change (or if done so in a way we have total control of), our streaming application (python script `streaming-app-genai.py`) kicks in. It will be consuming the topic `clean_leads`, for example:
-```
+```bash
 {
   "USER_ID": 1,
   "FIRST_NAME": "Bill",
@@ -171,7 +171,7 @@ Given the Linkedin information '<linkedin_public_profile_data>' about a person f
 5. Key: Two creative Ice breakers to open a conversation with them, Value: Array of strings
 ```
 11. The response we will get from OpenAI might vary, but here is one example:
-```
+```bash
 {
   "summary": "Co-chair of the Bill & Melinda Gates Foundation. Founder of Breakthrough Energy. Co-founder of Microsoft. Voracious reader. Avid traveler. Active blogger.",
   "latest_position": {
@@ -191,7 +191,7 @@ Given the Linkedin information '<linkedin_public_profile_data>' about a person f
 }
 ```
 12. Upon reciving that information the streaming application will publish to the kafka topic `clean_leads_enriched` (Avro serialised) the data from the lead added with the summary, for example:
-```
+```bash
 {
   "user_id": 1,
   "first_name": "Bill",
@@ -209,7 +209,7 @@ Given the Linkedin information '<linkedin_public_profile_data>' about a person f
 To run the demo, start docker desktop then run `./demo.sh --start`, it should take less than 2 minutes to have everything up and running, by default it will look Bill Gate up and get his summary from LinkedIn, but before you try to cold call him both email and phone number are no the real ones, so please don't try!
 
 Usage:
-```
+```bash
 usage: ./demo.sh [-h, --help] [-x, --start] [-p, --stop]
 
 Confluent and GenAI Demo
@@ -221,7 +221,7 @@ Options:
 ```
 
 Output example:
-```
+```bash
 2024-01-26 10:00:10.000 [INFO]: Activating virtual environment
 2024-01-26 10:00:11.000 [INFO]: Setting environment variables
 2024-01-26 10:00:11.000 [INFO]: Starting docker compose
@@ -344,7 +344,7 @@ Final Answer: https://www.linkedin.com/in/williamhgates
 
 ## Stopping the demo
 To stop the demo, please run `./demo.sh --stop`.
-```
+```bash
 2024-01-26 10:03:31.000 [INFO]: Stopping docker compose
 [+] Running 10/9
  ✔ Container ksqldb-cli        Removed
