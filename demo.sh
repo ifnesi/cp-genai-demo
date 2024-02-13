@@ -29,6 +29,7 @@ if [[ "$1" == "--stop" || "$1" == "-p" ]]; then
   # Stop demo
   logging "Stopping docker compose"
   if docker compose down ; then
+    kill -9 $(ps aux | grep 'pycrm:app' | awk '{print $2}') >/dev/null 2>&1
     logging "Demo successfully stopped"
     exit 0
   else
@@ -132,8 +133,18 @@ sleep 2
 echo ""
 logging "Demo environment is ready!"
 
+# Start PyCRM web app
+python3 .venv/bin/gunicorn --bind 127.0.0.1:8000 pycrm:app -w 1  --log-level CRITICAL  >/dev/null 2>&1 &
+logging "Waiting CRM Web Application to be ready" "INFO" -n
+while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://$HOST:8000/health-check)" != "200" ]]
+do
+    echo -n "."
+    sleep 1
+done
+
 # Create PostgreSQL Tables and insert mock data
-python3 provision_db.py
+echo ""
+python3 provision_db.py --config localhost.ini
 
 # Wait for CDC topic to be created
 logging "Waiting for topic '$TOPIC_CDC' to be created" "INFO" -n

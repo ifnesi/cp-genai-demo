@@ -1,0 +1,23 @@
+.dataTables_length {
+    margin: 10px;
+    width: 100%;
+    label {
+        display: inline-flex !important;
+        select.form-select {
+            margin: 0 10px 0 10px;
+            width: 70px;
+        }
+    }
+}
+
+.dataTables_filter {
+    margin: 10px;
+    width: 100%;
+    label {
+        display: inline-flex !important;
+        width: 100%;
+        input {
+            width: 100%;
+        }
+    }
+}

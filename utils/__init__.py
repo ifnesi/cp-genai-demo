@@ -8,6 +8,16 @@ from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
 
 
+# Global Variables
+FOLDER_CONFIG = "config"
+ENV_VAR_FILE = ".env_api_keys"
+ENV_KEYS = [
+    "OPENAI_API_KEY",
+    "PROXYCURL_API_KEY",
+    "SERPAPI_API_KEY",
+]
+
+
 def delivery_report(err, msg):
     if err is not None:
         logging.error(f"<Callback> Delivery failed for Data record {msg.key()}: {err}")

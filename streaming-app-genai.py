@@ -15,17 +15,7 @@ from langchain.chains import LLMChain
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
 
-from utils import linkedin_lookup_agent, scrape_linkedin_profile, delivery_report
-
-
-# Global Variables
-FOLDER_CONFIG = "config"
-ENV_VAR_FILE = ".env_api_keys"
-ENV_KEYS = [
-    "OPENAI_API_KEY",
-    "PROXYCURL_API_KEY",
-    "SERPAPI_API_KEY",
-]
+from utils import linkedin_lookup_agent, scrape_linkedin_profile, delivery_report, FOLDER_CONFIG, ENV_VAR_FILE, ENV_KEYS
 
 
 def main(args):
@@ -37,7 +27,7 @@ def main(args):
             print(f"cat > {ENV_VAR_FILE} <<EOF")
             print("export OPENAI_API_KEY=<openAI_Key_here>       # https://platform.openai.com/docs/quickstart/account-setup?context=python")
             print("export PROXYCURL_API_KEY=<ProxyURL_Key_here>  # https://nubela.co/proxycurl/")
-            print("export SERPAPI_API_KEY=<SERP_Key_here>     # https://serpapi.com/")
+            print("export SERPAPI_API_KEY=<SERP_Key_here>        # https://serpapi.com/")
             print("EOF\n")
             sys.exit(-1)
 

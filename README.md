@@ -69,13 +69,14 @@ You are now ready to start the demo!
 
 To understand how this demo works, let's go through step-by-step on what happens:
 1. When the demo starts (see [here](#running-the-demo) how to), it will provision the elements required:
-- PostgreSQL: Table created `public.pre_leads` with the following fields `user_id`, `first_name`, `last_name`, `email_address`, `phone_number`, `company`
-- pgAdmin: http://localhost:5050 (username: `admin@admin.org`, password: `admin`)
-- Confluent Platform: localhost:9094
-- Confluent Control Center: http://localhost:9021
-- Schema Registry: http://localhost:8081
-- Connect cluster + Debezium PostgreSQL CDC Source Connector: : http://localhost:8083
-- ksqlDB cluster: http://localhost:8088/info
+* PostgreSQL: Table created `public.pre_leads` with the following fields `user_id`, `first_name`, `last_name`, `email_address`, `phone_number`, `company`
+* pgAdmin: http://localhost:5050 (username: `admin@admin.org`, password: `admin`)
+* Confluent Platform: <a href="#">localhost:9094</a>
+* CRM Web Application: http://localhost:8000
+* Confluent Control Center: http://localhost:9021
+* Schema Registry: http://localhost:8081
+* Connect cluster + Debezium PostgreSQL CDC Source Connector: : http://localhost:8083
+* ksqlDB cluster: http://localhost:8088/info
 2. The python script `provision_db.py` will create the table `public.pre_leads` into the PostgreSQL database and insert the following row:
 ```
 INSERT INTO public.pre_leads (first_name, last_name, company, email_address, phone_number) VALUES ('Bill', 'Gates', 'Microsoft', 'billgates@example.com', '+1-202-555-0131');
@@ -135,7 +136,7 @@ INSERT INTO public.pre_leads (first_name, last_name, company, email_address, pho
   "transaction": null
 }
 ```
-5. We could use that topic as is, however if, for example, in the future we change our CRM system we would need to adjust all downstream applications for a possible new data structure. For that reason, we need to create a **Data Product** to be able to decouple the CRM to the downstream applications. In case of any change in the CRM we only need to adjust that layer. To do so we will use ksqlDB.
+5. We could use that topic as is, however if, for example, in the future we change our CRM system we would need to adjust all downstream applications for a possible new data structure. For that reason, we need to create a [**Data Product**](https://developer.confluent.io/courses/governing-data-streams/data-as-a-product/) to be able to decouple the CRM to the downstream applications. In case of any change in the CRM we only need to adjust that layer. To do so we will use ksqlDB.
 - First we need to ingest the topic `postgres.public.pre_leads`. The following is the ksqlDB Stream created:
 ```bash
 CREATE STREAM PRE_LEADS WITH (kafka_topic='postgres.public.pre_leads', value_format='AVRO');
@@ -155,7 +156,7 @@ CREATE STREAM CLEAN_LEADS WITH (kafka_topic='clean_leads', value_format='AVRO') 
   "PHONE_NUMBER": "+1-202-555-0131"
 }
 ```
-7. Upon consuming that topic it will get the FIRST_NAME, LAST_NAME and COMPANY to get from LinkedIn the profile URL. For that it will use OpenAI and ProxyCurl. The following is the prompt submitted to OpenAI's LLM:
+7. Upon consuming that topic it will read the FIRST_NAME, LAST_NAME and COMPANY to retrieve from LinkedIn the profile URL. For that it will use OpenAI and ProxyCurl. The following is the prompt submitted to OpenAI's LLM:
 ```
 Given the name '<FIRST_NAME LAST_NAME COMPANY>' get the link to their Linkedin profile. Your answer should only contain the URL
 ```
@@ -264,6 +265,7 @@ Output example:
 }
 
 2024-01-26 10:00:46.000 [INFO]: Demo environment is ready!
+2024-01-26 10:00:46.000 [INFO]: Waiting CRM Web Application to be ready
 2024-01-26 10:00:46.768 [INFO]: Table created successfully!
 2024-01-26 10:00:46.784 [INFO]: Initial lead successfuly created!
 2024-01-26 10:00:47.000 [INFO]: Waiting for topic 'postgres.public.pre_leads' to be created

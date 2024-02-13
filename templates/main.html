@@ -1,0 +1,115 @@
+{% extends 'header.html' %}
+
+{% block content %}
+<img class="rounded mx-auto d-block" src="{{ url_for('static', filename='images/logo.png') }}"></img>
+<div class="row mt-3">
+  <div class="col-sm-12 col-md-10">
+    <h4>Leads</h4>
+    <p>Lead management tool</p>
+  </div>
+  <div class="col-sm-12 col-md-2">
+    <button type="button" title="Add new lead" class="btn btn-light btn-outline-dark" data-bs-toggle="modal" data-bs-target="#newLeadModal" onclick="setModelNew();"><img src="{{ url_for('static', filename='images/add.png') }}"></img>&nbsp;New Lead</button>
+  </div>
+</div>
+<table id="data" class="table table-striped">
+    <thead>
+      <tr>
+        <th></th>
+        <th>User ID</th>
+        <th>Company</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email Address</th>
+        <th>Phone Number</th>
+    </tr>
+</thead>
+    <tbody>
+      {% for user in users %}
+        <tr>
+            <td style="white-space:nowrap;">
+                <button type="button" title="Edit current lead" class="btn btn-sm btn-light btn-outline-dark" data-bs-toggle="modal" data-bs-target="#newLeadModal" onclick="updateModalNew('{{ user[0] }}', '{{ user[1] }}', '{{ user[2] }}', '{{ user[3] }}', '{{ user[4] }}', '{{ user[5] }}');"><img src="{{ url_for('static', filename='images/edit.png') }}" width="18"></img></button>
+                &nbsp;
+                <button type="button" title="Delete current lead" class="btn btn-sm btn-light btn-outline-dark" data-bs-toggle="modal" data-bs-target="#delLeadModal" onclick="updateModalDelete('{{ user[0] }}');"><img src="{{ url_for('static', filename='images/delete.png') }}" width="18"></img></button>
+            </td>
+            <td>{{ user[0] }}</td>
+            <td>{{ user[1] }}</td>
+            <td>{{ user[2] }}</td>
+            <td>{{ user[3] }}</td>
+            <td><a href="mailto:{{ user[4] }}">{{ user[4] }}</a></td>
+            <td>{{ user[5] }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal Confirm Delete -->
+<div class="modal fade" id="delLeadModal" tabindex="-2" aria-labelledby="delLeadModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete Lead</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Delete <b>User ID <span id="del_user_id"></span></b></p>
+        <button type="submit" class="btn btn-danger float-end m-1" onclick="deleteLead();">Confirm</button>
+        <button type="button" class="btn btn-warning float-end m-1" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Add/Edit -->
+<div class="modal fade modal-xl" id="newLeadModal" tabindex="-1" aria-labelledby="newLeadModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newLeadModalLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/manage-lead" method="post">
+          <div class="row mb-3" id="div_user_id">
+            <label for="user_id" class="col-sm-2 col-form-label">User ID</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control bg-secondary" id="user_id" name="user_id" readonly>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="company" class="col-sm-2 col-form-label">Company</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="company" name="company" required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="first_name" class="col-sm-2 col-form-label">First Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="first_name" name="first_name" required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="last_name" class="col-sm-2 col-form-label">Last Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="last_name" name="last_name" required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="email" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="phone_number" class="col-sm-2 col-form-label">Phone Number</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="phone_number" name="phone_number" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success float-end m-1" id="save_button"></button>
+          <button type="button" class="btn btn-warning float-end m-1" data-bs-dismiss="modal">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
